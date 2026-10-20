@@ -59,11 +59,12 @@ const Statistics = ({ good, neutral, bad }) => {
 }
 
 const StatisticLine = ({ text, value }) => {
-  return (<tr>
-    <td>{text}</td>
-    <td>{value}</td>
-
-  </tr>)
+  return (
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
+  )
 }
 
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
