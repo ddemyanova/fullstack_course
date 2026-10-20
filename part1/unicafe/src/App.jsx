@@ -38,21 +38,33 @@ const Statistics = ({ good, neutral, bad }) => {
 
 
   const avg = (good - bad) / total
-  const positive = good / total * 100
+  const positive = good / total * 100 + '%'
 
   return (
-    <>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>total {total}</p>
-      <p>avg {avg}</p>
-      <p>positive {positive}%</p>
+    <><table>
+      <tbody>
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral} />
+        <StatisticLine text="bad" value={bad} />
+        <StatisticLine text="total" value={total} />
+        <StatisticLine text="avg" value={avg} />
+        <StatisticLine text="positive" value={positive} />
+      </tbody>
+    </table>
+
+
 
     </>
   )
 }
 
+const StatisticLine = ({ text, value }) => {
+  return (<tr>
+    <td>{text}</td>
+    <td>{value}</td>
+
+  </tr>)
+}
 
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
 
