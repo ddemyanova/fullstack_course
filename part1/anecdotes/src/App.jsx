@@ -13,27 +13,53 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
 
 
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       {anecdotes[selected]}
-      <p></p>
+      <VotesStatistic number={votes[selected]} />
+      <VoteButton onClick={(newVotes) => setVotes(newVotes)} votes={votes} index={selected} />
       <RandomizeButton listLength={anecdotes.length} onClick={(value) => setSelected(value)} />
-
+      <h2>Anecdote with most votes</h2>
+      <MostVotedAnecdote votes={votes} anecdotes={anecdotes} />
     </div>
   )
+}
+
+const MostVotedAnecdote = ({ votes, anecdotes }) => {
+  const mostVotedIndex = votes.indexOf(Math.max(...votes))
+  const mostVoted = anecdotes[mostVotedIndex]
+  return (
+    <>
+      <p>{mostVoted}</p>
+      <VotesStatistic number={votes[mostVotedIndex]} />
+    </>
+  )
+}
+const VotesStatistic = ({ number }) => {
+  return (<p>has {number} votes</p>)
+}
+
+const VoteButton = ({ onClick, votes, index }) => {
+  function vote() {
+    const copy = [...votes]
+    copy[index] += 1
+    onClick(copy)
+  }
+  return <button onClick={() => vote()}>Vote</button>
 }
 
 const RandomizeButton = ({ onClick, listLength }) => {
   function getRandomIndex() {
     const max = Math.floor(listLength);
     const rand = Math.floor(Math.random() * max);
-    console.log(max, rand)
     return rand
   }
 
-  return <button onClick={() => onClick(getRandomIndex(0))}>Random</button>
+  return <button onClick={() => onClick(getRandomIndex(0))}>Next anecdote</button>
 }
 
 export default App
