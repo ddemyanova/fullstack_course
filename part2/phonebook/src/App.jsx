@@ -1,8 +1,14 @@
 import { useState } from 'react'
+import SearchPhonebook from './components/SearchPhonebook'
+import PersonForm from './components/PersonForm'
+import Numbers from './components/Numbers'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: "12345" }
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -18,9 +24,12 @@ const App = () => {
 
   const addNote = (event) => {
     event.preventDefault()
-    console.log('button clicked', event.target)
 
-    const newPerson = { name: newName, number: newNumber }
+    const newPerson = {
+      name: newName,
+      number: newNumber,
+      id: String(persons.length + 1)
+    }
 
     if (persons.some(value => value.name === newPerson.name)) {
       showAlert()
@@ -37,24 +46,15 @@ const App = () => {
     alert(message)
   }
 
-  const personsToShow = persons.filter(value => value.name.includes(filterValue))
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>Search by <input onChange={(event) => setFilter(event.target.value)} value={filterValue} /></div>
+      <SearchPhonebook setFilter={(event) => setFilter(event.target.value)} filterValue={filterValue} />
       <h2>Add a new person</h2>
-      <form onSubmit={addNote}>
-        <div>
-          name: <input onChange={handleNameChange} value={newName} />
-        </div>
-        <div>number: <input onChange={handleNumberChange} value={newNumber} /></div>
-        <div>
-          <button type="submit" >add</button>
-        </div>
-      </form>
+      <PersonForm addNote={addNote} handleNameChange={handleNameChange} newName={newName} handleNumberChange={handleNumberChange} newNumber={newNumber} />
       <h2>Numbers</h2>
-      {personsToShow.map(person => <div key={person.name}>{person.name} {person.number}</div>)}
+      <Numbers persons={persons} filter={filterValue} />
     </div>
   )
 }
